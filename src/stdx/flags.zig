@@ -353,7 +353,6 @@ fn parse_value(comptime T: type, flag: []const u8, value: [:0]const u8) T {
     if (V == []const u8 or V == [:0]const u8) return value;
     if (V == bool) return parse_value_bool(flag, value);
     if (@typeInfo(V) == .int) return parse_value_int(V, flag, value);
-    if (@typeInfo(V) == .@"enum") return parse_value_enum(V, flag, value);
     if (@hasDecl(V, "parse_flag_value")) {
 
         // Contracts:
@@ -380,6 +379,7 @@ fn parse_value(comptime T: type, flag: []const u8, value: [:0]const u8) T {
             },
         }
     }
+    if (@typeInfo(V) == .@"enum") return parse_value_enum(V, flag, value);
     comptime unreachable;
 }
 
